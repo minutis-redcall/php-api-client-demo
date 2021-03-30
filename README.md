@@ -2,6 +2,7 @@
 
 To use this demo:
 
+- composer install
 - create API credentials at https://rcl.re/developer/token/
 - copy `config.yml.dist` into `config.yml`
 - set the right credentials in `config.yml`
