@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 
 class RedCallClient
 {
-    #const API_URL = 'http://127.0.0.1:8000';
+    //const API_URL = 'http://127.0.0.1:8000';
     const API_URL = 'https://rcl.re';
 
     /**
@@ -57,17 +57,10 @@ class RedCallClient
             'body'    => $body,
             'headers' => [
                 'Authorization' => sprintf('Bearer %s', $this->token),
-                'X-Signature'   => $this->sign($method, $uri, $body),
+                'X-Signature'   => hash_hmac('sha256', sprintf('%s%s%s', $method, $uri, $body), $this->secret),
             ],
         ]);
 
         return json_decode($response->getBody()->getContents(), true);
-    }
-
-    private function sign(string $method, string $uri, ?string $body = '') : string
-    {
-        $body = trim(str_replace("\r\n", "\n", $body));
-
-        return hash_hmac('sha256', sprintf('%s%s%s', $method, $uri, $body), $this->secret);
     }
 }
